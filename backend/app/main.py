@@ -32,7 +32,14 @@ async def lifespan(app: FastAPI):
             await session.commit()
             print("Default HR user seeded successfully.")
         else:
-            print("HR user already exists.")
+            # Check if existing user hash is a legacy bcrypt hash and migrate it to pbkdf2_sha256
+            if not default_user.hashed_password.startswith("$pbkdf2-sha256$"):
+                print("Legacy password hash detected. Migrating to pbkdf2_sha256...")
+                default_user.hashed_password = get_password_hash("password123")
+                await session.commit()
+                print("Default HR user migrated to pbkdf2_sha256 successfully.")
+            else:
+                print("HR user already exists with a valid password hash.")
             
     yield
     # Shutdown tasks go here (none needed currently)
