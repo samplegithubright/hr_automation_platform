@@ -5,7 +5,7 @@ from passlib.context import CryptContext
 from app.config import settings
 
 # Setup password context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verifies a plain text password against its hashed value."""
@@ -15,7 +15,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
         return False
 
 def get_password_hash(password: str) -> str:
-    """Generates a bcrypt hash of a plain text password."""
+    """Generates a PBKDF2-SHA256 hash of a plain text password."""
     return pwd_context.hash(password)
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None) -> str:

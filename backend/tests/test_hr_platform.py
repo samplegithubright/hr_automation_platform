@@ -93,3 +93,17 @@ def test_enforce_word_limit():
     pruned = AIService._enforce_word_limit(text, limit=800)
     words = pruned.split()
     assert len(words) <= 800
+
+
+# ==========================================
+# 4. Test Password Hashing
+# ==========================================
+
+def test_password_hashing():
+    from app.utils.security import get_password_hash, verify_password
+    pwd = "mysecretpassword"
+    hashed = get_password_hash(pwd)
+    assert hashed != pwd
+    assert verify_password(pwd, hashed) is True
+    assert verify_password("wrongpassword", hashed) is False
+
