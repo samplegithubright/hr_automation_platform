@@ -1,6 +1,7 @@
 import os
 import re
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import List
@@ -259,3 +260,44 @@ async def generate_job_social_assets(job: Job, db: AsyncSession, overwrite: bool
     if existing_asset:
         await db.refresh(db_asset)
     return db_asset
+
+
+@router.delete("/{job_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_job(
+    job_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Deletes a job posting and all associated candidates, screenings, and social assets."""
+    result = await db.execute(select(Job).where(Job.id == job_id))
+    job = result.scalars().first()
+    if not job:
+        raise HTTPException(status_code=404, detail="Job posting not found.")
+        
+    await db.delete(job)
+    await db.commit()
+    return None
+
+
+@router.get("/{job_id}/assets/download")
+async def download_job_visual(
+    job_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """Endpoint to download the branded visual promo card as an attachment."""
+    result = await db.execute(select(SocialAsset).where(SocialAsset.job_id == job_id))
+    assets = result.scalars().first()
+    if not assets or not assets.visual_url:
+        raise HTTPException(status_code=404, detail="Visual asset not found.")
+        
+    filename = os.path.basename(assets.visual_url)
+    file_path = os.path.join(settings.UPLOAD_DIR, "visuals", filename)
+    
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Image file not found on disk.")
+        
+    return FileResponse(
+        path=file_path,
+        media_type="image/png",
+        filename=f"Job_{job_id}_PromoCard.png"
+    )

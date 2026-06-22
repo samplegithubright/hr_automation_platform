@@ -179,7 +179,7 @@ export default function CandidateApplyPage() {
 
   return (
     <div className="app-container" style={{ maxWidth: "1100px", padding: "3rem 1.5rem" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1.25fr 1fr", gap: "3rem", alignItems: "start" }}>
+      <div className="grid-apply-layout">
         
         {/* Left Side: Job description details */}
         <div>
@@ -208,7 +208,7 @@ export default function CandidateApplyPage() {
         </div>
 
         {/* Right Side: Apply Form */}
-        <div style={{ position: "sticky", top: "40px" }}>
+        <div className="apply-sidebar">
           <div className="glass-card" style={{ padding: "2rem" }}>
             <h2 style={{ fontSize: "1.35rem", marginBottom: "0.5rem" }}>Apply for this Role</h2>
             <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "1.5rem" }}>Complete the form below and upload your resume to apply.</p>

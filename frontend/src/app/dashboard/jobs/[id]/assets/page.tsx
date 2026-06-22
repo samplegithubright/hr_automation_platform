@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getJobAssets, getJob, getStaticFileUrl, regenerateJobAssets, isAuthenticated } from "@/lib/api";
+import { getJobAssets, getJob, getStaticFileUrl, regenerateJobAssets, isAuthenticated, API_BASE_URL } from "@/lib/api";
 import { ArrowLeft, Copy, ExternalLink, RefreshCw, Sparkles, Check, Download, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
@@ -147,7 +147,7 @@ export default function SocialAssetsPage() {
         <p style={{ color: "var(--text-secondary)" }}>Social captions, targeted communities, and branded visuals for <strong>{job?.title}</strong> at <strong>{job?.organization_name}</strong>.</p>
       </div>
 
-      <div className="grid-2" style={{ alignItems: "start", gap: "2rem" }}>
+      <div className="assets-layout-grid">
         {/* Left Side: Social platforms */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           {/* LinkedIn Asset */}
@@ -320,7 +320,7 @@ export default function SocialAssetsPage() {
         </div>
 
         {/* Right Side: Branded visual preview */}
-        <div style={{ position: "sticky", top: "120px" }}>
+        <div className="assets-visual-sidebar">
           <div className="glass-card" style={{ padding: "1.5rem" }}>
             <h3 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>Branded Promotion Card</h3>
             <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginBottom: "1.5rem" }}>
@@ -344,10 +344,7 @@ export default function SocialAssetsPage() {
 
             {assets?.visual_url && (
               <a
-                href={getStaticFileUrl(assets.visual_url)}
-                download={`Job_${jobId}_Visual.png`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`${API_BASE_URL}/api/jobs/${jobId}/assets/download`}
                 className="btn btn-primary"
                 style={{ width: "100%" }}
               >

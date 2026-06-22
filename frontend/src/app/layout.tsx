@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AuraHR - AI-Powered Automated Recruitment Platform",
+  title: "HR - AI-Powered Automated Recruitment Platform",
   description:
-    "AuraHR helps companies polish job postings, generate social media assets, collect candidate submissions, and automatically screen resumes and GitHub repositories with Gemini LLM.",
+    "HR helps companies polish job postings, generate social media assets, collect candidate submissions, and automatically screen resumes and GitHub repositories with Gemini LLM.",
 };
 
 export default function RootLayout({

@@ -412,8 +412,213 @@ label {
     opacity: 0;
     transform: translateY(8px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+}
+
+/* Responsive Layout Extensions */
+
+/* 1. Public Candidate Application Layout */
+.grid-apply-layout {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.apply-sidebar {
+  position: sticky;
+  top: 40px;
+}
+
+@media (max-width: 1024px) {
+  .grid-apply-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .apply-sidebar {
+    position: static;
   }
 }
+
+/* 2. Responsive Dashboard Header & Actions */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-email-text {
+  display: inline;
+}
+
+@media (max-width: 640px) {
+  .header-container {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  .header-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .header-email-text {
+    display: none;
+  }
+}
+
+.dashboard-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-wrapper {
+  position: relative;
+  min-width: 300px;
+  flex: 1;
+  max-width: 400px;
+}
+
+@media (max-width: 640px) {
+  .dashboard-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-wrapper {
+    min-width: 100%;
+    max-width: 100%;
+  }
+  .dashboard-actions > a,
+  .dashboard-actions > button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* 3. Candidate Review List-Detail Panel Split (Responsive) */
+.job-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.candidate-list-panel {
+  display: block;
+}
+
+.candidate-detail-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mobile-back-btn {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .job-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .candidate-list-panel.hide-mobile {
+    display: none;
+  }
+  
+  .candidate-detail-panel.hide-mobile {
+    display: none;
+  }
+  
+  .mobile-back-btn {
+    display: inline-flex !important;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+}
+
+/* 4. Responsive Evaluation Score Circles & Grids */
+.score-circles-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .score-circles-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    gap: 1.5rem 1rem;
+  }
+}
+
+/* 5. Responsive Job Description Review (New Job page) */
+.new-job-review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.new-job-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .new-job-review-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .new-job-review-header button {
+    width: 100%;
+  }
+  
+  .new-job-actions {
+    flex-direction: column;
+  }
+  .new-job-actions button {
+    width: 100%;
+    flex: none !important;
+  }
+}
+
+/* 6. Promotional Assets / Job Kit Layout */
+.assets-layout-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.assets-visual-sidebar {
+  position: sticky;
+  top: 120px;
+}
+
+@media (max-width: 1024px) {
+  .assets-layout-grid {
+    grid-template-columns: 1fr;
+  }
+  .assets-visual-sidebar {
+    position: static;
+  }
+}
+

@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { loginHR, isAuthenticated } from "@/lib/api";
-import { KeyRound, Mail, Sparkles, Terminal } from "lucide-react";
+import { KeyRound, Mail, Sparkles } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -146,20 +146,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div style={{
-          marginTop: "1.75rem",
-          paddingTop: "1.25rem",
-          borderTop: "1px solid var(--border-color)",
-          fontSize: "0.75rem",
-          color: "var(--text-muted)",
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          justifyContent: "center"
-        }}>
-          <Terminal size={14} />
-          <span>Demo: hr@company.com / password123</span>
-        </div>
+
       </div>
     </div>
   );

@@ -236,7 +236,7 @@ export default function NewJobPage() {
 
         {status === "review" && (
           <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "1rem" }}>
+            <div className="new-job-review-header">
               <div>
                 <h1 style={{ fontSize: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   <Sparkles size={22} style={{ color: "var(--secondary)" }} />
@@ -299,7 +299,7 @@ export default function NewJobPage() {
             </div>
 
             {/* Action buttons */}
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <div className="new-job-actions">
               <button
                 onClick={handleApprove}
                 className={`btn btn-primary ${loading || polishedJD.split(/\s+/).filter(Boolean).length > 800 ? "btn-disabled" : ""}`}

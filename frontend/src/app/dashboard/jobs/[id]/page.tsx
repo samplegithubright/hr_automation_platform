@@ -19,6 +19,7 @@ export default function JobDetailPage() {
   const [submittingLinkedin, setSubmittingLinkedin] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showMobileDetail, setShowMobileDetail] = useState(false);
 
   // LinkedIn form fields
   const [linkedinExists, setLinkedinExists] = useState(true);
@@ -223,9 +224,9 @@ export default function JobDetailPage() {
           )}
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.25fr", gap: "2rem", alignItems: "start" }}>
+        <div className="job-detail-grid">
           {/* Left panel: Candidate List Table */}
-          <div className="glass-table-container">
+          <div className={`glass-table-container candidate-list-panel ${showMobileDetail ? "hide-mobile" : ""}`}>
             <table className="glass-table">
               <thead>
                 <tr>
@@ -241,7 +242,10 @@ export default function JobDetailPage() {
                   return (
                     <tr
                       key={cand.id}
-                      onClick={() => setSelectedCandidate(cand)}
+                      onClick={() => {
+                        setSelectedCandidate(cand);
+                        setShowMobileDetail(true);
+                      }}
                       style={{
                         backgroundColor: isSelected ? "rgba(99, 102, 241, 0.08)" : "",
                         borderLeft: isSelected ? "3px solid var(--primary)" : ""
@@ -274,7 +278,15 @@ export default function JobDetailPage() {
 
           {/* Right panel: Screening detail cards */}
           {selectedCandidate && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div className={`candidate-detail-panel ${!showMobileDetail ? "hide-mobile" : ""}`}>
+              {/* Mobile Back Button */}
+              <button 
+                onClick={() => setShowMobileDetail(false)}
+                className="btn btn-secondary mobile-back-btn"
+              >
+                <ArrowLeft size={16} />
+                <span>Back to Candidates</span>
+              </button>
               {/* Profile Card */}
               <div className="glass-card">
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "1.5rem" }}>
@@ -311,7 +323,7 @@ export default function JobDetailPage() {
                 {/* Score visualization row */}
                 {selectedCandidate.screening ? (
                   <div>
-                    <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "1.5rem", background: "rgba(0,0,0,0.15)", padding: "1rem", borderRadius: "12px", border: "1px solid var(--border-color)" }}>
+                    <div className="score-circles-container" style={{ marginBottom: "1.5rem", background: "rgba(0,0,0,0.15)", padding: "1rem", borderRadius: "12px", border: "1px solid var(--border-color)" }}>
                       {/* Overall circular badge */}
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <div

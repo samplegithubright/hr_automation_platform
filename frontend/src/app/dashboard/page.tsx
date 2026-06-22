@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getJobs, isAuthenticated, removeAuthToken, getMe } from "@/lib/api";
-import { Plus, Briefcase, FileText, Share2, LogOut, Search, Settings, Sparkles } from "lucide-react";
+import { getJobs, isAuthenticated, removeAuthToken, getMe, deleteJob } from "@/lib/api";
+import { Plus, Briefcase, FileText, Share2, LogOut, Search, Settings, Sparkles, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -44,6 +44,18 @@ export default function DashboardPage() {
     router.push("/");
   };
 
+  const handleDeleteJob = async (jobId: number, jobTitle: string) => {
+    if (!confirm(`Are you sure you want to delete the job posting "${jobTitle}"? This will permanently delete all candidate submissions and AI screenings for this job.`)) {
+      return;
+    }
+    try {
+      await deleteJob(jobId);
+      setJobs(jobs.filter(j => j.id !== jobId));
+    } catch (err: any) {
+      alert("Error deleting job: " + err.message);
+    }
+  };
+
   const filteredJobs = jobs.filter((job) => {
     const searchString = searchTerm.toLowerCase();
     return (
@@ -80,7 +92,7 @@ export default function DashboardPage() {
     <div>
       {/* Premium Header */}
       <header className="glass-header">
-        <div className="app-container flex-between" style={{ padding: "0" }}>
+        <div className="app-container header-container" style={{ padding: "0" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <div style={{
               width: "36px",
@@ -94,11 +106,11 @@ export default function DashboardPage() {
             }}>
               <Sparkles size={20} />
             </div>
-            <span style={{ fontSize: "1.25rem", fontWeight: 800 }}>AuraHR Dashboard</span>
+            <span style={{ fontSize: "1.25rem", fontWeight: 800 }}>HR Dashboard</span>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-            <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>
+          <div className="header-controls">
+            <span className="header-email-text" style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>
               Logged in as: <strong style={{ color: "#fff" }}>{userEmail}</strong>
             </span>
             <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem" }}>
@@ -112,16 +124,9 @@ export default function DashboardPage() {
       {/* Main Dashboard Section */}
       <main className="app-container">
         {/* Actions Bar */}
-        <div style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: "1rem",
-          marginBottom: "2rem",
-          flexWrap: "wrap"
-        }}>
+        <div className="dashboard-actions">
           {/* Search bar */}
-          <div style={{ position: "relative", minWidth: "300px" }}>
+          <div className="search-wrapper">
             <Search size={18} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
             <input
               type="text"
@@ -160,9 +165,29 @@ export default function DashboardPage() {
               <div key={job.id} className="glass-card animate-fade" style={{ animationDelay: `${idx * 0.05}s` }}>
                 {/* Header status */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                  <span className={`badge badge-${job.status}`}>
-                    {job.status}
-                  </span>
+                  <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                    <span className={`badge badge-${job.status}`}>
+                      {job.status}
+                    </span>
+                    <button
+                      onClick={() => handleDeleteJob(job.id, job.title)}
+                      title="Delete Job Posting"
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "var(--text-muted)",
+                        cursor: "pointer",
+                        padding: "2px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        transition: "color 0.2s ease"
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = "var(--danger)"}
+                      onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-muted)"}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
                     {new Date(job.created_at).toLocaleDateString()}
                   </span>

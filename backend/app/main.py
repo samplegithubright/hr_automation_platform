@@ -1,4 +1,9 @@
 import os
+import warnings
+
+# Silence deprecation warnings (e.g. cryptography/pypdf warnings)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles

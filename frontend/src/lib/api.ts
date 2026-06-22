@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 /**
  * Retrieves the stored JWT token.
@@ -177,6 +177,12 @@ export async function deleteCandidate(candidateId: number) {
   });
 }
 
+export async function deleteJob(jobId: number) {
+  return fetchAPI(`/api/jobs/${jobId}`, {
+    method: "DELETE",
+  });
+}
+
 export async function applyJob(jobId: number, formData: FormData) {
   const response = await fetch(`${API_BASE_URL}/api/candidates/apply/${jobId}`, {
     method: "POST",
@@ -203,7 +209,19 @@ export function getStaticFileUrl(path: string): string {
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path;
   }
+  
+  // Replace Windows backslashes with forward slashes
+  let cleanPath = path.replace(/\\/g, "/");
+  
   // Remove leading slash if present
-  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+  if (cleanPath.startsWith("/")) {
+    cleanPath = cleanPath.slice(1);
+  }
+  
+  // Map "uploads/" prefix to "static/" prefix
+  if (cleanPath.startsWith("uploads/")) {
+    cleanPath = "static/" + cleanPath.substring("uploads/".length);
+  }
+  
   return `${API_BASE_URL}/${cleanPath}`;
 }
